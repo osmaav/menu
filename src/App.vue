@@ -61,8 +61,7 @@
 </template>
 
 <script>
-  // import Recipe from './components/recipe.vue'
-  import recipeItem from './components/RecipeItem.vue'
+  import recipeItem from './components/RecipeItem2.vue'
   import recipeAutoCompleat from './components/RecipeAutoComleat.vue'
   import recipeDetails from './components/RecipeDetails.vue'
 
@@ -171,12 +170,11 @@
     },
     computed: {
       placeholderList() {
-        let p = this.recipeList
+        return this.recipeList
           .map((i) => i.name)
           .filter((i) => i.includes(this.inputElMenu))
           .sort((a, b) => (a < b ? -1 : 0))
           .filter((el, idx) => idx < 5)
-        return p
       },
       currentRecipeComponentsList() {
         return this.recipeList
