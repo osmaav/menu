@@ -13,7 +13,12 @@
 <script>
   export default {
     name: 'recipeList',
-    props: ['recipes'],
+    props: {
+      recipes: {
+        type: Array,
+        require: true,
+      },
+    },
   }
 </script>
 

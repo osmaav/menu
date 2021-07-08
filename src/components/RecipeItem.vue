@@ -26,6 +26,7 @@
     name: 'recipeItem',
     props: {
       recipe: {
+        require: true,
         id: 0,
         name: '',
         time: '',
