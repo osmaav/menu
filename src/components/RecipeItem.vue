@@ -7,6 +7,7 @@
       :style="recipe.selected ? 'color: red' : 'black'"
     >
       {{ recipe.name }}
+      {{ recipe.time }}
       <div v-if="false">
         {{ recipe }}
       </div>
@@ -27,6 +28,7 @@
       recipe: {
         id: 0,
         name: '',
+        time: '',
         selected: false,
         components: [{}],
       },

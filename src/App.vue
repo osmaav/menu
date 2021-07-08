@@ -1,12 +1,4 @@
 <template>
-  <!-- <h2>Меню недельное</h2>
-  <div v-for="day in days" :key="day.idx" class="column">
-    <h3 :style="(day == 'СБ' | day == 'ВС' )? 'color: rgb(255, 0, 0)' : ''">
-      {{ day }}
-    </h3>
-    <Recipe :products="products" />
-  </div> -->
-
   <div id="app" class="ml-2">
     <div>
       <label for="inp">название рецепта: </label>
@@ -15,25 +7,25 @@
         id="inp"
         type="text"
         placeholder="введите название"
-        style="width: 12rem"
         class="mt-2 mr-2"
-        @keyup.enter="addNewItem"
-        v-model.trim="inputElMenu"
+        style="width: 12rem"
+        @keyup.enter="addNewRecipe"
+        v-model.trim="inputRecipeName"
       />
       <button
         class="h-6 w-6 bg-green-400 text-white border-transparent bg-green-500 rounded-full"
         type="button"
-        @click.stop="addNewItem"
+        @click.stop="addNewRecipe"
       >
         +
       </button>
       <div class="mt-3">
         <label v-if="recipeList?.length" style="color: white" id="placeholder">
           <recipe-auto-compleat
-            v-for="(item, idx) in placeholderList"
-            :name="item"
+            v-for="(recipe, idx) in placeholderList"
+            :name="recipe"
             :key="idx"
-            @el-on-click=";(inputElMenu = item), $refs.recipeInput.focus()"
+            @el-on-click=";(inputRecipeName = recipe), $refs.recipeInput.focus()"
             class="border rounded mr-2 p-1 bg-gray-300"
           />
         </label>
@@ -42,11 +34,11 @@
     <hr class="mt-2 mb-2" />
     <ol>
       <recipe-item
-        v-for="item in recipeList"
-        :recipe="item"
-        :key="item.id"
-        @el-selected="selectedElMenu(item)"
-        @el-delete="delElMenu(item)"
+        v-for="recipe in recipeList"
+        :recipe="recipe"
+        :key="recipe.id"
+        @el-selected="selectedElMenu(recipe)"
+        @el-delete="recipeDelete(recipe)"
         class="pt-1 pb-1"
       />
     </ol>
@@ -58,109 +50,114 @@
       />
     </div>
   </div>
+  <hr class="mt-2 mb-2" />
+  <hr class="mt-2 mb-2" />
+  <h2 :style="'text-align: center'">Меню недельное</h2>
+  <hr class="mt-2 mb-2" />
+  <div v-for="day in DAYS_OF_WEAK" :key="day.idx" class="column">
+    <h3 :style="(day == 'СБ' ? 'color: rgb(255, 0, 0)' : '', 'text-align: center')">
+      {{ day }}
+    </h3>
+    <recipe-list :recipes="recipeList" />
+  </div>
 </template>
 
 <script>
-  import recipeItem from './components/RecipeItem2.vue'
+  import recipeList from './components/RecipeList.vue'
+  import recipeItem from './components/RecipeItem.vue'
   import recipeAutoCompleat from './components/RecipeAutoComleat.vue'
   import recipeDetails from './components/RecipeDetails.vue'
 
   export default {
     name: 'App',
+    components: {
+      recipeList,
+      recipeItem,
+      recipeAutoCompleat,
+      recipeDetails,
+    },
     data() {
       return {
-        daysOfWeak: ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'],
-        // products: [
-        //   {
-        //     time: 'Завтрак',
-        //     title: 'Каша',
-        //     ingridients: ['крупа', 'вода', 'что-то еще...'],
-        //   },
-        //   {
-        //     time: '2-ой Завтрак',
-        //     title: 'Суп',
-        //     ingridients: ['морковь', 'мясо'],
-        //   },
-        //   {
-        //     time: 'Обед',
-        //     title: 'Салат',
-        //     ingridients: ['лук', 'укроп'],
-        //   },
-        //   {
-        //     time: 'Полдник',
-        //     title: 'Суп',
-        //     ingridients: ['морковь', 'мясо'],
-        //   },
-        //   {
-        //     time: 'Ужин',
-        //     title: 'Суп',
-        //     ingridients: ['морковь', 'мясо'],
-        //   },
-        //   {
-        //     time: 'Ужин-2',
-        //     title: 'Суп',
-        //     ingridients: ['морковь', 'мясо'],
-        //   },
-        // ],
-        inputElMenu: '',
-        minLength: 0,
+        DAYS_OF_WEAK: ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'],
+        NAME_OF_TIMES: ['Завтрак', '2-ой Завтрак', 'Обед', 'Полдник', 'Ужин', 'Ужин-2'],
+        MIN_LEN_NAME: 0,
+        inputRecipeName: '',
         recipeList: [],
-        currentRecipeId: 0,
+        recipeCurrentId: 0,
         recipeSelected: false,
-        selectedElMenuId: null,
+        recipeSelectedId: null,
       }
     },
     mounted() {
       const recipeListData = localStorage.getItem('recipe-list')
-      const currentrecipeIdData = localStorage.getItem('current-recipe-id')
+      const recipeCurrentIdData = localStorage.getItem('recipe-current-id')
+      const recipeSelectedIdData = localStorage.getItem('recipe-selected-id')
       const recipeSelectedData = localStorage.getItem('recipe-selected')
-      const selectedElMenuIdData = localStorage.getItem('selected-el-menu-id')
       if (recipeListData) {
         this.recipeList = JSON.parse(recipeListData)
-        this.currentrecipeId = JSON.parse(currentrecipeIdData)
+        this.recipeCurrentId = JSON.parse(recipeCurrentIdData)
+        this.recipeSelectedId = JSON.parse(recipeSelectedIdData)
         this.recipeSelected = JSON.parse(recipeSelectedData)
-        this.selectedElMenuId = JSON.parse(selectedElMenuIdData)
       }
+    },
+    computed: {
+      placeholderList() {
+        return this.recipeList
+          .map((i) => i.name)
+          .filter((i) => i.includes(this.inputRecipeName))
+          .sort((a, b) => (a < b ? -1 : 0))
+          .filter((el, idx) => idx < 5)
+      },
+      currentRecipeComponentsList() {
+        return this.recipeList
+          .find((i) => i.id === this.recipeSelectedId)
+          ?.components.map((c) => c.name)
+      },
+      sizeNameOfTimes() {
+        return this.NAME_OF_TIMES.length
+      },
     },
     methods: {
       toLocalStorageUpdate() {
         localStorage.setItem('recipe-list', JSON.stringify(this.recipeList))
-        localStorage.setItem('current-recipe-id', JSON.stringify(this.currentRecipeId))
+        localStorage.setItem('recipe-current-id', JSON.stringify(this.recipeCurrentId))
         localStorage.setItem('recipe-selected', JSON.stringify(this.recipeSelected))
-        localStorage.setItem('selected-el-menu-id', JSON.stringify(this.selectedElMenuId))
+        localStorage.setItem('recipe-selected-id', JSON.stringify(this.recipeSelectedId))
       },
-      addNewItem() {
-        if (this.inputElMenu.length > this.minLength) {
+      addNewRecipe() {
+        if (this.inputRecipeName.length > this.MIN_LEN_NAME) {
+          let size = this.sizeNameOfTimes - 1
           this.recipeList.push({
-            id: (this.currentRecipeId += 1),
-            name: this.inputElMenu,
+            id: (this.recipeCurrentId += 1),
+            name: this.inputRecipeName,
+            time: this.NAME_OF_TIMES[Math.round(Math.random(size) * size)],
             selected: false,
             components: [],
           })
-          this.inputElMenu = ''
+          this.inputRecipeName = ''
           this.recipeSelected = false
-          this.selectedElMenuId = null
+          this.recipeSelectedId = null
           this.toLocalStorageUpdate()
         }
       },
       selectedElMenu(recipe) {
         if (!this.recipeSelected) this.recipeSelected = true
-        this.selectedElMenuId = recipe.id
+        this.recipeSelectedId = recipe.id
         this.recipeList.forEach((el) =>
           el.id === recipe.id ? (el.selected = true) : (el.selected = false),
         )
         this.toLocalStorageUpdate()
       },
-      delElMenu(recipe) {
-        if (recipe.selected) {
+      recipeDelete(recipeForDelete) {
+        if (recipeForDelete.selected) {
           this.recipeSelected = false
-          this.selectedElMenuId = null
+          this.recipeSelectedId = null
         }
-        this.recipeList = this.recipeList.filter((el) => el.id != recipe.id)
+        this.recipeList = this.recipeList.filter((recipe) => recipe.id != recipeForDelete.id)
         this.toLocalStorageUpdate()
       },
       recipeComponentAdd(componentName) {
-        let currentRecipe = this.recipeList.find((r) => r.id === this.selectedElMenuId)
+        let currentRecipe = this.recipeList.find((r) => r.id === this.recipeSelectedId)
         currentRecipe.components.push({
           id: currentRecipe.components.length,
           name: componentName,
@@ -168,52 +165,12 @@
         this.toLocalStorageUpdate()
       },
     },
-    computed: {
-      placeholderList() {
-        return this.recipeList
-          .map((i) => i.name)
-          .filter((i) => i.includes(this.inputElMenu))
-          .sort((a, b) => (a < b ? -1 : 0))
-          .filter((el, idx) => idx < 5)
-      },
-      currentRecipeComponentsList() {
-        return this.recipeList
-          .find((i) => i.id === this.selectedElMenuId)
-          ?.components.map((c) => c.name)
-      },
-    },
     watch: {
       recipeList() {
         this.toLocalStorageUpdate()
       },
     },
-    components: {
-      recipeItem,
-      recipeAutoCompleat,
-      recipeDetails,
-    },
   }
 </script>
 
-<style>
-  * {
-    box-sizing: border-box;
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    /* text-align: center; */
-    color: #2c3e50;
-    background-color: rgba(aa, aa, aa, 0.2);
-    padding: 0 0;
-  }
-  h2 {
-    text-transform: uppercase;
-  }
-  h3 {
-    margin: 0 0;
-  }
-  .column {
-    float: left;
-    width: 12rem;
-  }
-</style>
+<style></style>
