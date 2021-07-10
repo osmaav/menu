@@ -1,17 +1,23 @@
 <template>
   <div id="app" class="ml-2">
     <div>
-      <label for="inp">название рецепта: </label>
+      <label for="inputRecipeName">Название рецепта: </label>
       <input
         ref="recipeInput"
-        id="inp"
+        id="inputRecipeName"
         type="text"
         placeholder="введите название"
         class="mt-2 mr-2"
         style="width: 12rem"
-        @keyup.enter="addNewRecipe"
         v-model.trim="inputRecipeName"
       />
+      <!-- @keyup.enter="addNewRecipe" -->
+      <label for="selectTime">Период: </label>
+      <select name="time" id="selectTime" required="true" v-model="nameOfTimeSelected">
+        <option v-for="(nameOfTime, idx) in NAME_OF_TIMES" :key="idx">
+          {{ nameOfTime }}
+        </option>
+      </select>
       <button
         class="h-6 w-6 bg-green-400 text-white border-transparent bg-green-500 rounded-full"
         type="button"
@@ -19,7 +25,6 @@
       >
         +
       </button>
-      <select />
       <div class="mt-3">
         <label v-if="recipeList?.length" style="color: white" id="placeholder">
           <recipe-auto-compleat
@@ -81,6 +86,7 @@
       return {
         DAYS_OF_WEAK: ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'],
         NAME_OF_TIMES: ['Завтрак', '2-ой Завтрак', 'Обед', 'Полдник', 'Ужин', 'Ужин-2'],
+        nameOfTimeSelected: 'Завтрак',
         MIN_LEN_NAME: 0,
         inputRecipeName: '',
         recipeList: [],
@@ -131,7 +137,7 @@
           this.recipeList.push({
             id: (this.recipeCurrentId += 1),
             name: this.inputRecipeName,
-            time: this.NAME_OF_TIMES[Math.round(Math.random(size) * size)],
+            time: this.nameOfTimeSelected,
             selected: false,
             components: [],
           })
