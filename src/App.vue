@@ -60,8 +60,8 @@
   <hr class="mt-2 mb-2" />
   <h2 :style="'text-align: center'">Меню недельное</h2>
   <hr class="mt-2 mb-2" />
-  <div v-for="day in DAYS_OF_WEAK" :key="day.idx" class="column">
-    <h3 :style="(day == 'СБ' ? 'color: rgb(255, 0, 0)' : '', 'text-align: center')">
+  <div :style="'text-align: center'" v-for="day in DAYS_OF_WEAK" :key="day.idx" class="column">
+    <h3 :style="day === 'СБ' || day === 'ВС' ? 'color: rgb(255, 0, 0)' : ''">
       {{ day }}
     </h3>
     <recipe-list :recipes="recipeList" />
@@ -179,5 +179,3 @@
     },
   }
 </script>
-
-<style></style>
