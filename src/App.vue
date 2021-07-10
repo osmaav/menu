@@ -10,8 +10,8 @@
         class="mt-2 mr-2"
         style="width: 12rem"
         v-model.trim="inputRecipeName"
+        @keyup.stop.enter="addNewRecipe"
       />
-      <!-- @keyup.enter="addNewRecipe" -->
       <label for="selectTime">Период: </label>
       <select name="time" id="selectTime" required="true" v-model="nameOfTimeSelected">
         <option v-for="(nameOfTime, idx) in NAME_OF_TIMES" :key="idx">
