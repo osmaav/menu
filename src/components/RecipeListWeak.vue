@@ -58,4 +58,8 @@
   h4 {
     color: rgb(127, 11, 243);
   }
+  h3,
+  h4 {
+    font-weight: bold;
+  }
 </style>

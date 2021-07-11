@@ -17,7 +17,7 @@
     >
       +
     </button>
-    <div>состав: {{ recipeComponentsList }}</div>
+    <div>состав: {{ recipeComponentsList.toString() }}</div>
   </div>
 </template>
 
