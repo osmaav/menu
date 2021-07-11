@@ -39,7 +39,7 @@
     </div>
     <hr class="mt-2 mb-2" />
     <ol>
-      <recipe-item
+      <recipe-list
         v-for="recipe in recipeList"
         :recipe="recipe"
         :key="recipe.id"
@@ -64,21 +64,21 @@
     <h3 :style="day === 'СБ' || day === 'ВС' ? 'color: rgb(255, 0, 0)' : ''">
       {{ day }}
     </h3>
-    <recipe-list :recipes="recipeList" />
+    <recipe-list-weak :recipes="recipeList" />
   </div>
 </template>
 
 <script>
+  import recipeListWeak from './components/RecipeListWeak.vue'
   import recipeList from './components/RecipeList.vue'
-  import recipeItem from './components/RecipeItem.vue'
   import recipeAutoCompleat from './components/RecipeAutoComleat.vue'
   import recipeDetails from './components/RecipeDetails.vue'
 
   export default {
     name: 'App',
     components: {
+      recipeListWeak,
       recipeList,
-      recipeItem,
       recipeAutoCompleat,
       recipeDetails,
     },
