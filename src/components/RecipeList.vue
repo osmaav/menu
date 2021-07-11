@@ -21,12 +21,13 @@
     name: 'recipeList',
     props: {
       recipe: {
+        type: Object,
         require: true,
-        id: 0,
-        name: '',
-        time: '',
-        selected: false,
-        components: [{}],
+        id: Number,
+        name: String,
+        time: String,
+        selected: Boolean,
+        components: Array,
       },
     },
     emits: {
@@ -50,6 +51,6 @@
   li:hover {
     font-weight: bold;
     color: rgb(8, 12, 255);
-    text-shadow: 1px 2px 3px rgba(0, 0, 0, 0.3);
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
   }
 </style>

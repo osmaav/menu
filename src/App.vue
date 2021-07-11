@@ -64,7 +64,7 @@
     <h3 :style="day === 'СБ' || day === 'ВС' ? 'color: rgb(255, 0, 0)' : ''">
       {{ day }}
     </h3>
-    <recipe-list-weak :recipes="recipeList" />
+    <recipe-list-weak :recipe="recipeList" />
   </div>
 </template>
 
@@ -117,8 +117,8 @@
       },
       currentRecipeComponentsList() {
         return this.recipeList
-          .find((i) => i.id === this.recipeSelectedId)
-          ?.components.map((c) => c.name)
+          .find((recipe) => recipe.id === this.recipeSelectedId)
+          ?.components.map((component) => component.name)
       },
       sizeNameOfTimes() {
         return this.NAME_OF_TIMES.length

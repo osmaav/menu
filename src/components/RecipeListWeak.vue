@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="card container" v-for="recipe in recipes" :key="recipe.id">
+    <div class="card container" v-for="(recipe, idx) in recipe" :key="idx">
       <h4>{{ recipe?.time }}</h4>
       <h3>{{ recipe?.name }}</h3>
-      <p v-for="component in recipe.components" :key="component.id">
-        {{ component }}
+      <p v-for="(component, idx) in recipe?.components" :key="idx">
+        {{ component.name }}
       </p>
     </div>
   </div>
@@ -12,11 +12,21 @@
 
 <script>
   export default {
-    name: 'recipeList',
+    name: 'recipeListWeak',
     props: {
-      recipes: {
-        type: Array,
+      recipe: {
+        type: Object,
         require: true,
+        id: Number,
+        name: String,
+        time: String,
+        selected: Boolean,
+        components: Array,
+      },
+    },
+    computed: {
+      recipeComponentsList() {
+        return this.recipe?.components
       },
     },
   }

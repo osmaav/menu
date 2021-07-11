@@ -1,13 +1,13 @@
 <template>
   <div>
-    <label for="inp-detail">компонент: </label>
+    <label for="input-component-name">компонент: </label>
     <input
-      id="inp-detail"
+      id="input-component-name"
       type="text"
       placeholder="введите название"
       style="width: 12rem"
       class="mt-2 mr-2"
-      v-model.trim="inputRecipeDetail"
+      v-model.trim="inputComponentName"
       @keyup.enter.stop="recipeComponentAdd()"
     />
     <button
@@ -17,31 +17,29 @@
     >
       +
     </button>
-    <div>
-      состав: {{recipeComponentsList}}
-    </div>
+    <div>состав: {{ recipeComponentsList }}</div>
   </div>
 </template>
 
 <script>
   export default {
     name: 'recipeDetails',
-      props: {
-        recipeComponentsList: { type: Array, require: false },
+    props: {
+      recipeComponentsList: { type: Array, require: true },
+    },
+    data() {
+      return {
+        inputComponentName: '',
+      }
+    },
+    emits: {
+      recipeComponentAdd: null,
+    },
+    methods: {
+      recipeComponentAdd() {
+        this.$emit('recipeComponentAdd', this.inputComponentName)
+        this.inputComponentName = ''
       },
-      data() {
-        return {
-          inputRecipeDetail: '',
-        }
-      },
-      emits: {
-        recipeComponentAdd: null,
-      },
-      methods: {
-        recipeComponentAdd() {
-          this.$emit('recipeComponentAdd', this.inputRecipeDetail)
-          this.inputRecipeDetail = ''
-        },
-      },
+    },
   }
 </script>
