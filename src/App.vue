@@ -3,7 +3,7 @@
     <div>
       <label for="inputRecipeName">Название рецепта: </label>
       <input
-        ref="recipeInput"
+        ref="inputRecipeName"
         id="inputRecipeName"
         type="text"
         placeholder="введите название"
@@ -12,8 +12,8 @@
         v-model.trim="inputRecipeName"
         @keyup.stop.enter="addNewRecipe"
       />
-      <label for="selectTime">Период: </label>
-      <select name="time" id="selectTime" required="true" v-model="nameOfTimeSelected">
+      <label for="selectNameOfTime">Период: </label>
+      <select name="time" id="selectNameOfTime" required="true" v-model="nameOfTimeSelected">
         <option v-for="(nameOfTime, idx) in NAME_OF_TIMES" :key="idx">
           {{ nameOfTime }}
         </option>
@@ -25,14 +25,14 @@
       >
         +
       </button>
-      <div class="mt-3">
-        <label v-if="recipeList?.length" style="color: white" id="placeholder">
+      <div>
+        <label v-if="recipeList?.length" id="placeHolder">
           <recipe-auto-compleat
-            v-for="(recipe, idx) in placeholderList"
+            v-for="(recipe, idx) in placeHolderList"
             :name="recipe"
             :key="idx"
-            @el-on-click=";(inputRecipeName = recipe), $refs.recipeInput.focus()"
-            class="border rounded mr-2 p-1 bg-gray-300"
+            @el-on-click=";(inputRecipeName = recipe), $refs.inputRecipeName.focus()"
+            class="rounded bg-gray-200"
           />
         </label>
       </div>
@@ -58,7 +58,7 @@
   </div>
   <hr class="mt-2 mb-2" />
   <hr class="mt-2 mb-2" />
-  <h2 :style="'text-align: center'">Меню недельное</h2>
+  <h1 :style="'text-align: center'">Меню недельное</h1>
   <hr class="mt-2 mb-2" />
   <div :style="'text-align: center'" v-for="day in DAYS_OF_WEAK" :key="day.idx" class="column">
     <h3 :style="day === 'СБ' || day === 'ВС' ? 'color: rgb(255, 0, 0)' : ''">
@@ -108,7 +108,7 @@
       }
     },
     computed: {
-      placeholderList() {
+      placeHolderList() {
         return this.recipeList
           .map((i) => i.name)
           .filter((i) => i.includes(this.inputRecipeName))
@@ -179,3 +179,10 @@
     },
   }
 </script>
+<style scoped>
+  h1,
+  h3 {
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+</style>

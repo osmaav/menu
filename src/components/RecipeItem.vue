@@ -1,11 +1,6 @@
 <template>
   <div>
-    <li
-      @mouseover.stop="onMouseOver"
-      @mouseleave.stop="onMouseLeave(recipe, $event)"
-      @click.stop="onClick(recipe.id)"
-      :style="recipe.selected ? 'color: red' : 'black'"
-    >
+    <li @click.stop="onClick(recipe.id)" :style="recipe.selected ? 'color: red' : 'black'">
       {{ recipe.name }}
       {{ recipe.time }}
       <div v-if="false">
@@ -39,17 +34,6 @@
       elDelete: null,
     },
     methods: {
-      onMouseOver(e) {
-        if (e.target.type === 'button') return
-        e.target.style = 'color: blue'
-      },
-      onMouseLeave(recipe, e) {
-        e.target.type != 'button'
-          ? recipe.selected
-            ? (e.target.style = 'color: red')
-            : (e.target.style = 'color: black')
-          : {}
-      },
       onClick(id) {
         this.$emit('elSelected', id)
       },
@@ -59,3 +43,13 @@
     },
   }
 </script>
+<style scoped>
+  li {
+    transition: 0.2s;
+  }
+  li:hover {
+    font-weight: bold;
+    color: rgb(8, 12, 255);
+    text-shadow: 1px 2px 3px rgba(0, 0, 0, 0.3);
+  }
+</style>

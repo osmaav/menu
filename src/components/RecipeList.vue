@@ -29,12 +29,11 @@
     transition: 0.3s;
     border-radius: 7px;
     box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.2);
-    text-align: center;
   }
   .card:hover {
     box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
-    text-shadow: 1px 2px 3px rgba(0, 0, 0, 0.3);
-    text-align: center;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
   }
   .container {
     padding: 2px 2px;
@@ -47,7 +46,6 @@
     padding: 0;
   }
   h4 {
-    text-transform: uppercase;
-    color: rgb(86, 4, 163);
+    color: rgb(127, 11, 243);
   }
 </style>
