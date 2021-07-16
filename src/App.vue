@@ -60,7 +60,7 @@
   <hr class="mt-2 mb-2" />
   <h1 :style="'text-align: center'">Меню недельное</h1>
   <hr class="mt-2 mb-2" />
-  <div :style="'text-align: center'" v-for="day in DAYS_OF_WEAK" :key="day.idx" class="column">
+  <div :style="'text-align: center'" v-for="(day, idx) in sliceDays(0)" :key="idx" class="column">
     <h3 :style="day === 'СБ' || day === 'ВС' ? 'color: rgb(255, 0, 0)' : ''">
       {{ day }}
     </h3>
@@ -170,6 +170,9 @@
           name: componentName,
         })
         this.toLocalStorageUpdate()
+      },
+      sliceDays(start = 0, count = 1) {
+        return this.DAYS_OF_WEAK.slice(start, count)
       },
     },
     watch: {
