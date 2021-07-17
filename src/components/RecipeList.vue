@@ -7,7 +7,7 @@
         {{ recipe }}
       </div>
       <button
-        class="h-6 w-6 bg-red-400 text-white border-transparent bg-red-500 rounded-full"
+        class="h-6 w-6 text-white border-transparent bg-red-500 rounded-full"
         type="button"
         @click.stop="delItem(recipe)"
       >

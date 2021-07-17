@@ -58,9 +58,31 @@
   </div>
   <hr class="mt-2 mb-2" />
   <hr class="mt-2 mb-2" />
-  <h1 :style="'text-align: center'">Меню недельное</h1>
+  <div :style="'text-align: center; font-weight: bold; width: ' + COUNT_DAY_VIEW * 12 + 'rem'">
+    <h1>Меню недельное</h1>
+    <button
+      @click="COUNT_DAY_VIEW > 1 ? (COUNT_DAY_VIEW -= 1) : {}"
+      class="m-1 h-6 w-6 bg-red-500 text-white border-transparent rounded-full"
+      type="button"
+    >
+      -
+    </button>
+    <span> {{ COUNT_DAY_VIEW }} (ДНЕЙ)</span>
+    <button
+      @click="COUNT_DAY_VIEW < 7 ? (COUNT_DAY_VIEW += 1) : {}"
+      class="m-1 h-6 w-6 bg-green-500 text-white border-transparent rounded-full"
+      type="button"
+    >
+      +
+    </button>
+  </div>
   <hr class="mt-2 mb-2" />
-  <div :style="'text-align: center'" v-for="(day, idx) in sliceDays(0)" :key="idx" class="column">
+  <div
+    :style="'text-align: center'"
+    v-for="(day, idx) in sliceDays(0, COUNT_DAY_VIEW)"
+    :key="idx"
+    class="column"
+  >
     <h3 :style="day === 'СБ' || day === 'ВС' ? 'color: rgb(255, 0, 0)' : ''">
       {{ day }}
     </h3>
@@ -85,6 +107,7 @@
     data() {
       return {
         DAYS_OF_WEAK: ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'],
+        COUNT_DAY_VIEW: 1,
         NAME_OF_TIMES: ['Завтрак', '2-ой Завтрак', 'Обед', 'Полдник', 'Ужин', 'Ужин-2'],
         nameOfTimeSelected: 'Завтрак',
         MIN_LEN_NAME: 0,

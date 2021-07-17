@@ -11,7 +11,7 @@
       @keyup.enter.stop="recipeComponentAdd()"
     />
     <button
-      class="w-6 h-6 bg-green-400 text-white border-transparent bg-green-500 rounded-full"
+      class="w-6 h-6 text-white border-transparent bg-green-500 rounded-full"
       type="button"
       @click.stop="recipeComponentAdd()"
     >
