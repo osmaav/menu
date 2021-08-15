@@ -17,7 +17,12 @@
     >
       +
     </button>
-    <div>состав: {{ recipeComponentsList.toString() }}</div>
+    <div>
+      состав:
+      <div v-for="(component, idx) in recipeComponentsList" :key="idx" class="card container">
+        {{ component }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -43,3 +48,4 @@
     },
   }
 </script>
+<style scoped></style>

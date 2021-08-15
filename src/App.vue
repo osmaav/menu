@@ -38,7 +38,7 @@
       </div>
     </div>
     <hr class="mt-2 mb-2" />
-    <ol>
+    <div>
       <recipe-list
         v-for="recipe in recipeList"
         :recipe="recipe"
@@ -47,7 +47,7 @@
         @el-delete="recipeDelete(recipe)"
         class="pt-1 pb-1"
       />
-    </ol>
+    </div>
     <div v-if="recipeSelectedId">
       <hr class="mt-2 mb-2" />
       <recipe-details

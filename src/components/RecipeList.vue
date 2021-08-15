@@ -1,19 +1,21 @@
 <template>
-  <div>
-    <li @click.stop="onClick(recipe.id)" :style="recipe.selected ? 'color: red' : 'black'">
-      {{ recipe.name }}
-      {{ recipe.time }}
-      <div v-if="false">
-        {{ recipe }}
-      </div>
-      <button
-        class="h-6 w-6 text-white border-transparent bg-red-500 rounded-full"
-        type="button"
-        @click.stop="delItem(recipe)"
-      >
-        -
-      </button>
-    </li>
+  <div
+    class="card container"
+    @click.stop="onClick(recipe.id)"
+    :style="recipe.selected ? 'color: red' : 'black'"
+  >
+    {{ recipe.name }}
+    {{ recipe.time }}
+    <div v-if="false">
+      {{ recipe }}
+    </div>
+    <button
+      class="h-6 w-6 text-white border-transparent bg-red-500 rounded-full"
+      type="button"
+      @click.stop="delItem(recipe)"
+    >
+      -
+    </button>
   </div>
 </template>
 <script>
@@ -43,13 +45,3 @@
     },
   }
 </script>
-<style scoped>
-  li {
-    transition: 0.2s;
-  }
-  li:hover {
-    font-weight: bold;
-    color: rgb(8, 12, 255);
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
-  }
-</style>
