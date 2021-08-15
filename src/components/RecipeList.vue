@@ -26,7 +26,6 @@
         id: Number,
         name: String,
         time: String,
-        selected: Boolean,
         components: Array,
       },
     },

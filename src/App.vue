@@ -1,10 +1,10 @@
 <template>
   <div id="app" class="ml-2">
     <div>
-      <label for="inputRecipeName">Название рецепта: </label>
+      <label for="input-recipe-name">Название рецепта: </label>
       <input
         ref="inputRecipeName"
-        id="inputRecipeName"
+        id="input-recipe-name"
         type="text"
         placeholder="введите название"
         class="mt-2 mr-2"
@@ -12,10 +12,10 @@
         v-model.trim="inputRecipeName"
         @keyup.stop.enter="addNewRecipe"
       />
-      <label for="selectNameOfTime">Период: </label>
-      <select name="time" id="selectNameOfTime" required="true" v-model="nameOfTimeSelected">
-        <option v-for="(nameOfTime, idx) in NAME_OF_TIMES" :key="idx">
-          {{ nameOfTime }}
+      <label for="timeDay">Период: </label>
+      <select id="timeDay" required="true" v-model="timeDay">
+        <option v-for="(timeDay, idx) in TIMES_DAY" :key="idx">
+          {{ timeDay }}
         </option>
       </select>
       <button
@@ -43,12 +43,12 @@
         v-for="recipe in recipeList"
         :recipe="recipe"
         :key="recipe.id"
-        @el-selected="selectedElMenu(recipe)"
+        @el-selected="recipeSelected(recipe.id, recipeSelectedId)"
         @el-delete="recipeDelete(recipe)"
         class="pt-1 pb-1"
       />
     </ol>
-    <div v-if="recipeSelected">
+    <div v-if="recipeSelectedId">
       <hr class="mt-2 mb-2" />
       <recipe-details
         :recipe-components-list="currentRecipeComponentsList"
@@ -61,7 +61,8 @@
   <div :style="'text-align: center; font-weight: bold; width: ' + COUNT_DAY_VIEW * 12 + 'rem'">
     <h1>Меню недельное</h1>
     <button
-      @click="COUNT_DAY_VIEW > 1 ? (COUNT_DAY_VIEW -= 1) : {}"
+      v-if="COUNT_DAY_VIEW > 1"
+      @click="COUNT_DAY_VIEW -= 1"
       class="m-1 h-6 w-6 bg-red-500 text-white border-transparent rounded-full"
       type="button"
     >
@@ -69,7 +70,8 @@
     </button>
     <span> {{ COUNT_DAY_VIEW }} (ДНЕЙ)</span>
     <button
-      @click="COUNT_DAY_VIEW < 7 ? (COUNT_DAY_VIEW += 1) : {}"
+      v-if="COUNT_DAY_VIEW < 7"
+      @click="COUNT_DAY_VIEW += 1"
       class="m-1 h-6 w-6 bg-green-500 text-white border-transparent rounded-full"
       type="button"
     >
@@ -108,13 +110,12 @@
       return {
         DAYS_OF_WEAK: ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'],
         COUNT_DAY_VIEW: 1,
-        NAME_OF_TIMES: ['Завтрак', '2-ой Завтрак', 'Обед', 'Полдник', 'Ужин', 'Ужин-2'],
-        nameOfTimeSelected: 'Завтрак',
+        TIMES_DAY: ['Завтрак', '2-ой Завтрак', 'Обед', 'Полдник', 'Ужин', 'Ужин-2'],
+        timeDay: 'Завтрак',
         MIN_LEN_NAME: 0,
         inputRecipeName: '',
         recipeList: [],
         recipeCurrentId: 0,
-        recipeSelected: false,
         recipeSelectedId: null,
       }
     },
@@ -122,12 +123,10 @@
       const recipeListData = localStorage.getItem('recipe-list')
       const recipeCurrentIdData = localStorage.getItem('recipe-current-id')
       const recipeSelectedIdData = localStorage.getItem('recipe-selected-id')
-      const recipeSelectedData = localStorage.getItem('recipe-selected')
       if (recipeListData) {
         this.recipeList = JSON.parse(recipeListData)
         this.recipeCurrentId = JSON.parse(recipeCurrentIdData)
         this.recipeSelectedId = JSON.parse(recipeSelectedIdData)
-        this.recipeSelected = JSON.parse(recipeSelectedData)
       }
     },
     computed: {
@@ -143,44 +142,43 @@
           .find((recipe) => recipe.id === this.recipeSelectedId)
           ?.components.map((component) => component.name)
       },
-      sizeNameOfTimes() {
-        return this.NAME_OF_TIMES.length
+      sizeTimesDay() {
+        return this.TIMES_DAY.length
       },
     },
     methods: {
       toLocalStorageUpdate() {
         localStorage.setItem('recipe-list', JSON.stringify(this.recipeList))
         localStorage.setItem('recipe-current-id', JSON.stringify(this.recipeCurrentId))
-        localStorage.setItem('recipe-selected', JSON.stringify(this.recipeSelected))
         localStorage.setItem('recipe-selected-id', JSON.stringify(this.recipeSelectedId))
       },
       addNewRecipe() {
         if (this.inputRecipeName.length > this.MIN_LEN_NAME) {
-          let size = this.sizeNameOfTimes - 1
+          let size = this.sizeTimesDay - 1
           this.recipeList.push({
             id: (this.recipeCurrentId += 1),
             name: this.inputRecipeName,
-            time: this.nameOfTimeSelected,
+            time: this.timeDay,
             selected: false,
             components: [],
           })
           this.inputRecipeName = ''
-          this.recipeSelected = false
-          this.recipeSelectedId = null
+          if (this.recipeSelectedId) {
+            this.recipeList.find((el) => el.id === this.recipeSelectedId).selected = false
+            this.recipeSelectedId = null
+          }
           this.toLocalStorageUpdate()
         }
       },
-      selectedElMenu(recipe) {
-        if (!this.recipeSelected) this.recipeSelected = true
-        this.recipeSelectedId = recipe.id
-        this.recipeList.forEach((el) =>
-          el.id === recipe.id ? (el.selected = true) : (el.selected = false),
-        )
+      recipeSelected(recipeId, recipeSelectedOldId) {
+        if (recipeSelectedOldId)
+          this.recipeList.find((el) => el.id === recipeSelectedOldId).selected = false
+        this.recipeList.find((el) => el.id === recipeId).selected = true
+        this.recipeSelectedId = recipeId
         this.toLocalStorageUpdate()
       },
       recipeDelete(recipeForDelete) {
         if (recipeForDelete.selected) {
-          this.recipeSelected = false
           this.recipeSelectedId = null
         }
         this.recipeList = this.recipeList.filter((recipe) => recipe.id != recipeForDelete.id)
