@@ -1,94 +1,96 @@
 <template>
-  <div id="app" class="ml-2">
-    <div>
-      <label for="input-recipe-name">Название рецепта: </label>
-      <input
-        ref="inputRecipeName"
-        id="input-recipe-name"
-        type="text"
-        placeholder="введите название"
-        class="mt-2 mr-2"
-        style="width: 12rem"
-        v-model.trim="inputRecipeName"
-        @keyup.stop.enter="addNewRecipe"
-      />
-      <label for="timeDay">Период: </label>
-      <select id="timeDay" required="true" v-model="timeDay">
-        <option v-for="(timeDay, idx) in TIMES_DAY" :key="idx">
-          {{ timeDay }}
-        </option>
-      </select>
-      <button
-        class="h-6 w-6 bg-green-400 text-white border-transparent bg-green-500 rounded-full"
-        type="button"
-        @click.stop="addNewRecipe"
-      >
-        +
-      </button>
+  <div>
+    <div id="app" class="ml-2">
       <div>
-        <label v-if="recipeList?.length" id="placeHolder">
-          <recipe-auto-compleat
-            v-for="(recipe, idx) in placeHolderList"
-            :name="recipe"
-            :key="idx"
-            @el-on-click=";(inputRecipeName = recipe), $refs.inputRecipeName.focus()"
-            class="rounded bg-gray-200"
-          />
-        </label>
+        <label for="input-recipe-name">Название рецепта: </label>
+        <input
+          ref="inputRecipeName"
+          id="input-recipe-name"
+          type="text"
+          placeholder="введите название"
+          class="mt-2 mr-2"
+          style="width: 12rem"
+          v-model.trim="inputRecipeName"
+          @keyup.stop.enter="addNewRecipe"
+        />
+        <label for="timeDay">Период: </label>
+        <select id="timeDay" required="true" v-model="timeDay">
+          <option v-for="(timeDay, idx) in TIMES_DAY" :key="idx">
+            {{ timeDay }}
+          </option>
+        </select>
+        <button
+          class="h-6 w-6 bg-green-400 text-white border-transparent bg-green-500 rounded-full"
+          type="button"
+          @click.stop="addNewRecipe"
+        >
+          +
+        </button>
+        <div>
+          <label v-if="recipeList?.length" id="placeHolder">
+            <recipe-auto-compleat
+              v-for="(recipe, idx) in placeHolderList"
+              :name="recipe"
+              :key="idx"
+              @el-on-click=";(inputRecipeName = recipe), $refs.inputRecipeName.focus()"
+              class="rounded bg-gray-200"
+            />
+          </label>
+        </div>
+      </div>
+      <hr class="mt-2 mb-2" />
+      <div>
+        <recipe-list
+          v-for="recipe in recipeList"
+          :recipe="recipe"
+          :key="recipe.id"
+          @el-selected="recipeSelected(recipe.id, recipeSelectedId)"
+          @el-delete="recipeDelete(recipe)"
+          class="pt-1 pb-1"
+        />
+      </div>
+      <div v-if="recipeSelectedId">
+        <hr class="mt-2 mb-2" />
+        <recipe-details
+          :recipe-components-list="currentRecipeComponentsList"
+          @recipe-component-add="recipeComponentAdd"
+        />
       </div>
     </div>
     <hr class="mt-2 mb-2" />
-    <div>
-      <recipe-list
-        v-for="recipe in recipeList"
-        :recipe="recipe"
-        :key="recipe.id"
-        @el-selected="recipeSelected(recipe.id, recipeSelectedId)"
-        @el-delete="recipeDelete(recipe)"
-        class="pt-1 pb-1"
-      />
+    <hr class="mt-2 mb-2" />
+    <div :style="'text-align: center; font-weight: bold; width: ' + COUNT_DAY_VIEW * 12 + 'rem'">
+      <h1>Меню недельное</h1>
+      <button
+        v-if="COUNT_DAY_VIEW > 1"
+        @click="COUNT_DAY_VIEW -= 1"
+        class="m-1 h-6 w-6 bg-red-500 text-white border-transparent rounded-full"
+        type="button"
+      >
+        -
+      </button>
+      <span> {{ COUNT_DAY_VIEW }} (ДНЕЙ)</span>
+      <button
+        v-if="COUNT_DAY_VIEW < 7"
+        @click="COUNT_DAY_VIEW += 1"
+        class="m-1 h-6 w-6 bg-green-500 text-white border-transparent rounded-full"
+        type="button"
+      >
+        +
+      </button>
     </div>
-    <div v-if="recipeSelectedId">
-      <hr class="mt-2 mb-2" />
-      <recipe-details
-        :recipe-components-list="currentRecipeComponentsList"
-        @recipe-component-add="recipeComponentAdd"
-      />
+    <hr class="mt-2 mb-2" />
+    <div
+      :style="'text-align: center'"
+      v-for="(day, idx) in sliceDays(0, COUNT_DAY_VIEW)"
+      :key="idx"
+      class="column"
+    >
+      <h3 :style="day === 'СБ' || day === 'ВС' ? 'color: rgb(255, 0, 0)' : ''">
+        {{ day }}
+      </h3>
+      <recipe-list-weak :recipe="recipeList" />
     </div>
-  </div>
-  <hr class="mt-2 mb-2" />
-  <hr class="mt-2 mb-2" />
-  <div :style="'text-align: center; font-weight: bold; width: ' + COUNT_DAY_VIEW * 12 + 'rem'">
-    <h1>Меню недельное</h1>
-    <button
-      v-if="COUNT_DAY_VIEW > 1"
-      @click="COUNT_DAY_VIEW -= 1"
-      class="m-1 h-6 w-6 bg-red-500 text-white border-transparent rounded-full"
-      type="button"
-    >
-      -
-    </button>
-    <span> {{ COUNT_DAY_VIEW }} (ДНЕЙ)</span>
-    <button
-      v-if="COUNT_DAY_VIEW < 7"
-      @click="COUNT_DAY_VIEW += 1"
-      class="m-1 h-6 w-6 bg-green-500 text-white border-transparent rounded-full"
-      type="button"
-    >
-      +
-    </button>
-  </div>
-  <hr class="mt-2 mb-2" />
-  <div
-    :style="'text-align: center'"
-    v-for="(day, idx) in sliceDays(0, COUNT_DAY_VIEW)"
-    :key="idx"
-    class="column"
-  >
-    <h3 :style="day === 'СБ' || day === 'ВС' ? 'color: rgb(255, 0, 0)' : ''">
-      {{ day }}
-    </h3>
-    <recipe-list-weak :recipe="recipeList" />
   </div>
 </template>
 
