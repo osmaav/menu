@@ -12,8 +12,7 @@
   "bugs": {
     "url": "https://github.com/osmaav/menu/issues"
   },
-  "homepage": "https://github.com/osmaav/menu#readme"
-}
+  "homepage": "https://github.com/osmaav/menu#readme",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
