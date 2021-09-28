@@ -17,9 +17,13 @@
     >
       +
     </button>
-    <div>
+    <div style="margin-top: 7px">
       состав:
-      <div v-for="(component, idx) in recipeComponentsList" :key="idx" class="card container">
+      <div
+        v-for="(component, idx) in recipeComponentsList"
+        :key="idx"
+        class="card container detail"
+      >
         {{ component }}
       </div>
     </div>

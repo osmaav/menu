@@ -19,8 +19,8 @@ h3 {
   width: 12rem;
 }
 .card {
-  margin: 10px;
-  width: 11rem;
+  margin: 7px;
+  width: fit-content;
   transition: 0.3s;
   border-radius: 7px;
   box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.2);
@@ -34,4 +34,9 @@ h3 {
 .container {
   padding: 4px 4px;
   background-color: rgba(200, 200, 200, 0.3);
+}
+
+.detail {
+  display: inline;
+  background-color: rgba(200, 200, 500, 0.3);
 }
