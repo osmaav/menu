@@ -2,6 +2,18 @@
   "name": "menu",
   "version": "0.1.0",
   "private": true,
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/osmaav/menu.git"
+  },
+  "author": "osmaav",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/osmaav/menu/issues"
+  },
+  "homepage": "https://github.com/osmaav/menu#readme"
+}
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
