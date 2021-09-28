@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/osmaav/menu.git"
   },
-  "author": "osmaav",
+  "author": "osmaav@ngs.ru",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/osmaav/menu/issues"
@@ -15,7 +15,7 @@
   "homepage": "https://github.com/osmaav/menu#readme",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build && rm -rf docs && mv dist docs",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
