@@ -13,7 +13,16 @@
           v-model.trim="inputRecipeName"
           @keyup.stop.enter="addNewRecipe"
         />
-        <label for="timeDay">Период: </label>
+        <button
+          name="btnClearInput"
+          v-if="inputRecipeName"
+          class="h-6 w-6 text-white border-transparent bg-red-500 rounded-full"
+          type="button"
+          @click.stop=";(inputRecipeName = ''), $refs.inputRecipeName.focus()"
+        >
+          x
+        </button>
+        <label for="timeDay"> Период: </label>
         <select id="timeDay" required="true" v-model="timeDay">
           <option v-for="(timeDay, idx) in TIMES_DAY" :key="idx">
             {{ timeDay }}
@@ -95,18 +104,18 @@
 </template>
 
 <script>
-  import recipeListWeak from './components/RecipeListWeak.vue'
-  import recipeList from './components/RecipeList.vue'
   import recipeAutoCompleat from './components/RecipeAutoComleat.vue'
+  import recipeList from './components/RecipeList.vue'
   import recipeDetails from './components/RecipeDetails.vue'
+  import recipeListWeak from './components/RecipeListWeak.vue'
 
   export default {
     name: 'App',
     components: {
-      recipeListWeak,
-      recipeList,
       recipeAutoCompleat,
+      recipeList,
       recipeDetails,
+      recipeListWeak,
     },
     data() {
       return {

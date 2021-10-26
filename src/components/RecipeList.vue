@@ -14,7 +14,7 @@
       type="button"
       @click.stop="delItem(recipe)"
     >
-      -
+      x
     </button>
   </div>
 </template>
