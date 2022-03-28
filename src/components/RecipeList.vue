@@ -4,7 +4,7 @@
     @click.stop="onClick(recipe.id)"
     :style="recipe.selected ? 'color: red' : 'black'"
   >
-    {{ recipe.name }}
+    {{ recipe.name }} "на"
     {{ recipe.time }}
     <div v-if="false">
       {{ recipe }}

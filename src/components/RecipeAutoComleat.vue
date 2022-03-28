@@ -1,18 +1,18 @@
 <template>
-  <span class="card" @click.stop="onClick(name)">
-    {{ name }}
+  <span class="card" @click.stop="onClick(title)">
+    {{ title }}
   </span>
 </template>
 <script>
   export default {
     name: 'recipeAutoCompleat',
     props: {
-      name: { name: '' },
+      title: String,
     },
     emits: ['elOnClick'],
     methods: {
-      onClick(i) {
-        this.$emit('elOnClick', i)
+      onClick(s) {
+        this.$emit('elOnClick', s)
       },
     },
   }

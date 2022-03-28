@@ -38,16 +38,17 @@
         <div>
           <label v-if="recipeList?.length" id="placeHolder">
             <recipe-auto-compleat
+              class="rounded bg-gray-200"
               v-for="(recipe, idx) in placeHolderList"
-              :name="recipe"
+              :title="recipe"
               :key="idx"
               @el-on-click=";(inputRecipeName = recipe), $refs.inputRecipeName.focus()"
-              class="rounded bg-gray-200"
             />
           </label>
         </div>
       </div>
       <hr class="mt-2 mb-2" />
+      <div :style="'font-weight: bold'">Список рецептов:</div>
       <div>
         <recipe-list
           v-for="recipe in recipeList"
@@ -60,13 +61,13 @@
       </div>
       <div v-if="recipeSelectedId">
         <hr class="mt-2 mb-2" />
+        <div :style="'font-weight: bold'">Состав рецепта:</div>
         <recipe-details
           :recipe-components-list="currentRecipeComponentsList"
           @recipe-component-add="recipeComponentAdd"
         />
       </div>
     </div>
-    <hr class="mt-2 mb-2" />
     <hr class="mt-2 mb-2" />
     <div :style="'text-align: center; font-weight: bold; width: ' + COUNT_DAY_VIEW * 12 + 'rem'">
       <h1>Меню недельное</h1>
@@ -98,7 +99,8 @@
       <h3 :style="day === 'СБ' || day === 'ВС' ? 'color: rgb(255, 0, 0)' : ''">
         {{ day }}
       </h3>
-      <recipe-list-weak :recipe="recipeList" />
+      <recipe-list-weak :recipe="recipeList" :TIMES_DAY="TIMES_DAY" />
+      <!-- @el-selected="recipeListWeakSelected" -->
     </div>
   </div>
 </template>
@@ -142,11 +144,15 @@
     },
     computed: {
       placeHolderList() {
-        return this.recipeList
-          .map((i) => i.name)
-          .filter((i) => i.includes(this.inputRecipeName))
-          .sort((a, b) => (a < b ? -1 : 0))
-          .filter((el, idx) => idx < 5)
+        let arr = [
+          ...new Set(
+            this.recipeList
+              .map((data) => data.name)
+              .filter((i) => i.includes(this.inputRecipeName))
+              .sort((a, b) => (a < b ? -1 : 0)),
+          ),
+        ]
+        return arr.filter((el, idx) => idx < 5)
       },
       currentRecipeComponentsList() {
         return this.recipeList
@@ -206,6 +212,9 @@
       sliceDays(start = 0, count = 1) {
         return this.DAYS_OF_WEAK.slice(start, count)
       },
+      // recipeListWeakSelected(id) {
+      //   alert(id)
+      // },
     },
     watch: {
       recipeList() {

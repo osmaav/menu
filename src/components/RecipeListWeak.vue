@@ -1,10 +1,12 @@
 <template>
-  <div class="card container" v-for="(recipe, idx) in recipe" :key="idx">
-    <h4>{{ recipe?.time }}</h4>
-    <h3>{{ recipe?.name }}</h3>
-    <p v-for="(component, idx) in recipe?.components" :key="idx">
-      {{ component.name }}
-    </p>
+  <div class="card container" v-for="(timeDay, idx) in TIMES_DAY" :key="idx">
+    <!-- @click.stop="onClick(recipe?.id)" -->
+    <h4>{{ timeDay }}</h4>
+    <select id="recipeName">
+      <option v-for="(r, idx) in filteredRecipeName(recipe, timeDay)" :key="idx">
+        {{ r }}
+      </option>
+    </select>
   </div>
 </template>
 
@@ -12,6 +14,7 @@
   export default {
     name: 'recipeListWeak',
     props: {
+      TIMES_DAY: Array,
       recipe: {
         type: Object,
         require: true,
@@ -26,6 +29,17 @@
       recipeComponentsList() {
         return this.recipe?.components
       },
+    },
+    emits: {
+      // elSelected: null,
+    },
+    methods: {
+      filteredRecipeName(recipe, timeDay) {
+        return recipe.filter((r) => r.time == timeDay).map((c) => c.name)
+      },
+      // onClick(num) {
+      //   this.$emit('elSelected', num)
+      // },
     },
   }
 </script>
