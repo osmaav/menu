@@ -49,7 +49,7 @@
       </div>
       <hr class="mt-2 mb-2" />
       <div :style="'font-weight: bold'">Список рецептов:</div>
-      <!-- <div>
+      <div>
         <recipe-list
           v-for="recipe in recipeList"
           :recipe="recipe"
@@ -66,7 +66,7 @@
           :recipe-components-list="currentRecipeComponentsList"
           @recipe-component-add="recipeComponentAdd"
         />
-      </div> -->
+      </div>
     </div>
     <hr class="mt-2 mb-2" />
     <div :style="'text-align: center; font-weight: bold; width: ' + COUNT_DAY_VIEW * 12 + 'rem'">
@@ -115,8 +115,8 @@
     name: 'App',
     components: {
       recipeAutoCompleat,
-      // recipeList,
-      // recipeDetails,
+      recipeList,
+      recipeDetails,
       recipeListWeak,
     },
     data() {
@@ -193,8 +193,13 @@
       recipeSelected(recipeId, recipeSelectedOldId) {
         if (recipeSelectedOldId)
           this.recipeList.find((el) => el.id === recipeSelectedOldId).selected = false
-        this.recipeList.find((el) => el.id === recipeId).selected = true
-        this.recipeSelectedId = recipeId
+        if (recipeId == this.recipeSelectedId) {
+          this.recipeList.find((el) => el.id === recipeId).selected = false
+          this.recipeSelectedId = null
+        } else {
+          this.recipeList.find((el) => el.id === recipeId).selected = true
+          this.recipeSelectedId = recipeId
+        }
         this.toLocalStorageUpdate()
       },
       recipeDelete(recipeForDelete) {

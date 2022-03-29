@@ -18,7 +18,7 @@ h3 {
   width: 12rem;
 }
 .card {
-  margin: 7px;
+  margin: 5px;
   width: fit-content;
   transition: 0.3s;
   border-radius: 7px;
@@ -38,4 +38,7 @@ h3 {
 .detail {
   display: inline;
   background-color: rgba(200, 200, 500, 0.3);
+}
+.card.container.pt-1.pb-1 {
+  display: inline-block;
 }

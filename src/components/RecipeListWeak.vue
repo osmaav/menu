@@ -61,6 +61,5 @@
   }
   .card.container {
     width: 11rem;
-    min-inline-size: 100px;
   }
 </style>
