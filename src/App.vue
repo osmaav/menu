@@ -125,11 +125,12 @@
         COUNT_DAY_VIEW: 1,
         TIMES_DAY: ['Завтрак', '2-ой Завтрак', 'Обед', 'Полдник', 'Ужин', 'Ужин-2'],
         timeDay: 'Завтрак',
-        MIN_LEN_NAME: 0,
+        MIN_LEN_NAME: 3,
         inputRecipeName: '',
         recipeList: [],
         recipeCurrentId: 0,
         recipeSelectedId: null,
+        recipeListsWeak: [],
       }
     },
     mounted() {
