@@ -83,7 +83,7 @@
       <button
         v-if="COUNT_DAY_VIEW < 7"
         @click="COUNT_DAY_VIEW += 1"
-        class="m-1 h-6 w-6 bg-green-500 text-white border-transparent rounded-full"
+        class="m-1 h-4 w-4 bg-green-500 text-white border-transparent rounded-full"
         type="button"
       >
         +
