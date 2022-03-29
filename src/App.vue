@@ -16,7 +16,7 @@
         <button
           name="btnClearInput"
           v-if="inputRecipeName"
-          class="h-6 w-6 text-white border-transparent bg-red-500 rounded-full"
+          class="h-4 w-4 text-white border-transparent bg-red-500 rounded-full"
           type="button"
           @click.stop=";(inputRecipeName = ''), $refs.inputRecipeName.focus()"
         >
@@ -29,7 +29,7 @@
           </option>
         </select>
         <button
-          class="h-6 w-6 bg-green-400 text-white border-transparent bg-green-500 rounded-full"
+          class="h-4 w-4 bg-green-400 text-white border-transparent bg-green-500 rounded-full"
           type="button"
           @click.stop="addNewRecipe"
         >
@@ -74,7 +74,7 @@
       <button
         v-if="COUNT_DAY_VIEW > 1"
         @click="COUNT_DAY_VIEW -= 1"
-        class="m-1 h-6 w-6 bg-red-500 text-white border-transparent rounded-full"
+        class="m-1 h-4 w-4 bg-red-500 text-white border-transparent rounded-full"
         type="button"
       >
         -

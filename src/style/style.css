@@ -42,3 +42,6 @@ h3 {
 .card.container.pt-1.pb-1 {
   display: inline-block;
 }
+button {
+  font-size: x-small;
+}
