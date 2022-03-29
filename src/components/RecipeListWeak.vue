@@ -3,6 +3,7 @@
     <!-- @click.stop="onClick(recipe?.id)" -->
     <h4>{{ timeDay }}</h4>
     <select id="recipeName">
+      <option value="">выберите рецепт</option>
       <option v-for="(r, idx) in filteredRecipeName(recipe, timeDay)" :key="idx">
         {{ r }}
       </option>
@@ -57,5 +58,9 @@
   h3,
   h4 {
     font-weight: bold;
+  }
+  .card.container {
+    width: 11rem;
+    min-inline-size: 100px;
   }
 </style>

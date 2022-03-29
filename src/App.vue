@@ -49,7 +49,7 @@
       </div>
       <hr class="mt-2 mb-2" />
       <div :style="'font-weight: bold'">Список рецептов:</div>
-      <div>
+      <!-- <div>
         <recipe-list
           v-for="recipe in recipeList"
           :recipe="recipe"
@@ -66,7 +66,7 @@
           :recipe-components-list="currentRecipeComponentsList"
           @recipe-component-add="recipeComponentAdd"
         />
-      </div>
+      </div> -->
     </div>
     <hr class="mt-2 mb-2" />
     <div :style="'text-align: center; font-weight: bold; width: ' + COUNT_DAY_VIEW * 12 + 'rem'">
@@ -115,8 +115,8 @@
     name: 'App',
     components: {
       recipeAutoCompleat,
-      recipeList,
-      recipeDetails,
+      // recipeList,
+      // recipeDetails,
       recipeListWeak,
     },
     data() {
@@ -136,6 +136,8 @@
       const recipeListData = localStorage.getItem('recipe-list')
       const recipeCurrentIdData = localStorage.getItem('recipe-current-id')
       const recipeSelectedIdData = localStorage.getItem('recipe-selected-id')
+      const CountDayViewData = localStorage.getItem('count-day-view')
+      if (CountDayViewData) this.COUNT_DAY_VIEW = +JSON.parse(CountDayViewData)
       if (recipeListData) {
         this.recipeList = JSON.parse(recipeListData)
         this.recipeCurrentId = JSON.parse(recipeCurrentIdData)
@@ -168,6 +170,7 @@
         localStorage.setItem('recipe-list', JSON.stringify(this.recipeList))
         localStorage.setItem('recipe-current-id', JSON.stringify(this.recipeCurrentId))
         localStorage.setItem('recipe-selected-id', JSON.stringify(this.recipeSelectedId))
+        localStorage.setItem('count-day-view', JSON.stringify(this.COUNT_DAY_VIEW))
       },
       addNewRecipe() {
         if (this.inputRecipeName.length > this.MIN_LEN_NAME) {
@@ -218,6 +221,9 @@
     },
     watch: {
       recipeList() {
+        this.toLocalStorageUpdate()
+      },
+      COUNT_DAY_VIEW() {
         this.toLocalStorageUpdate()
       },
     },
